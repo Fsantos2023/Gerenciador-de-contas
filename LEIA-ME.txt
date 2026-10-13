@@ -1,0 +1,24 @@
+MEU CONTROLE FINANCEIRO — PREMIUM FINAL
+
+Esta versão preserva o cadastro/login local, contas e boletos, leitura OCR por foto, receitas, salário, parcelas de até 120 vezes, comprovantes, metas, backups e configurações premium.
+
+ACESSO INICIAL / RECUPERAÇÃO
+Usuário: 10346516927
+Senha: 16251404
+Na primeira abertura, este acesso é criado automaticamente. Se já houver um cadastro antigo neste navegador, entrar com estes dados recupera o acesso e preserva as finanças salvas. Após entrar, faça um backup e altere a senha nas configurações, se desejar.
+
+NO ANDROID
+1. Extraia o ZIP.
+2. Abra index.html no Acode para testar.
+3. Para instalar como PWA com cache offline, publique os arquivos em HTTPS e abra o endereço no Chrome.
+4. Exporte backups JSON regularmente.
+
+CONFIGURAÇÕES
+Efeitos sonoros, animações, pop-ups, vibração opcional, antecedência de alertas e permissão de notificações do sistema.
+
+LIMITAÇÕES REAIS
+- A leitura de boleto usa OCR carregado pela internet e pode errar. Sempre confira e corrija a linha digitável.
+- Alertas são verificados quando o app abre/está em uso; o navegador não garante alarmes quando fechado.
+- Login/senha é apenas local, não é autenticação segura de servidor. Não existe sincronização em nuvem.
+- Dados e anexos ficam no navegador; limpar dados pode apagá-los. Faça backup.
+- O app não paga boletos nem confirma pagamentos com bancos.
