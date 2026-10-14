@@ -108,7 +108,49 @@ const monthKey = () => today().slice(0,7);
 const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 function toast(msg){if(prefs.popups===false)return;const el=$('#toast');el.textContent=msg;el.classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.add('hidden'),3200);tone();if(prefs.vibrate&&navigator.vibrate)navigator.vibrate(35)}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch(e){toast('Armazenamento cheio. Remova anexos grandes e faça um backup.');return false}}
+
+function save(){
+  try {
+    localStorage.setItem(KEY, JSON.stringify(state));
+
+    if (window.firebaseAuth &&
+        window.firebaseAuth.currentUser &&
+        window.firebaseDB &&
+        window.cloudSyncReady) {
+      clearTimeout(window.cloudSyncTimer);
+
+      window.cloudSyncTimer = setTimeout(async () => {
+        try {
+          const user = window.firebaseAuth.currentUser;
+          const payload = {
+            bills: state.bills || [],
+            incomes: state.incomes || [],
+            receipts: state.receipts || [],
+            goals: state.goals || [],
+            user: user.email,
+            updatedAt: new Date().toISOString()
+          };
+
+          await window.firebaseDB
+            .collection('users')
+            .doc(user.uid)
+            .collection('appData')
+            .doc('main')
+            .set(payload);
+        } catch (error) {
+          console.error('Erro ao sincronizar:', error);
+          toast('Erro ao sincronizar. Confira sua conexão.');
+        }
+      }, 800);
+    }
+
+    return true;
+  } catch (e) {
+    toast('Armazenamento cheio. Remova anexos grandes e faça um backup.');
+    return false;
+  }
+}
+
 function hash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(16)}
 function safeText(v){return esc(v||'—')}
 function showAuth(){state=load();if(!state){state={user:'10346516927',passHash:hash('16251404|mcf-local-v2'),bills:[],incomes:[],receipts:[],goals:[],createdAt:new Date().toISOString()};save()}$('#authScreen').classList.remove('hidden');$('#app').classList.add('hidden');authMode=state?.user?'login':'register';$('#authEyebrow').textContent=authMode==='register'?'Seu espaço financeiro':'Acesso pessoal';$('#authTitle').textContent=authMode==='register'?'Organize seu dinheiro com clareza.':'Que bom ter você de volta.';$('#authDescription').textContent=authMode==='register'?'Crie seu acesso pessoal para começar a controlar receitas, contas e comprovantes.':'Entre com seu usuário e senha para acessar seu controle financeiro.';$('#authSubmit').textContent=authMode==='register'?'Criar meu acesso →':'Entrar no meu painel →';$('#confirmWrap').classList.toggle('hidden',authMode!=='register');$('#authPass').autocomplete=authMode==='register'?'new-password':'current-password';$('#authNote').textContent=authMode==='register'?'🔐 O acesso é local neste aparelho e navegador, não é uma conta online. Escolha uma senha que você não use em outros serviços. Faça backups regulares.':'🔐 Se esquecer a senha, não existe recuperação online. Guarde seus backups em local seguro.';$('#authUser').value='';$('#authPass').value='';$('#authConfirm').value=''}
