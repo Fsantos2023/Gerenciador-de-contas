@@ -200,5 +200,30 @@ savePrefs();
 showAuth();
 })();
 </script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+<script>
+(function () {
+  const firebaseConfig = {
+    apiKey: "AIzaSyCNFMkwUcBwhk2WFJEWYW0XFAl6qgILAe",
+    authDomain: "meu-controle-financeiro-765eb.firebaseapp.com",
+    projectId: "meu-controle-financeiro-765eb",
+    storageBucket: "meu-controle-financeiro-765eb.firebasestorage.app",
+    messagingSenderId: "413145981545",
+    appId: "1:413145981545:web:edf0247587f5e0e0e538f8"
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
+  window.firebaseAuth = firebase.auth();
+  window.firebaseDB = firebase.firestore();
+
+  console.log("Firebase conectado ao aplicativo.");
+})();
+</script>
 </body>
 </html>
