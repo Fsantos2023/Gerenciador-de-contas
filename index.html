@@ -139,7 +139,7 @@ function save(){
             .set(payload);
         } catch (error) {
           console.error('Erro ao sincronizar:', error);
-          toast('Erro ao sincronizar. Confira sua conexão.');
+          toast('Erro Firebase: ' + (error.code || 'sem código') + ' — ' + (error.message || error));
         }
       }, 800);
     }
