@@ -235,7 +235,7 @@ $('#authForm').addEventListener('submit', async e => {
     toast('Login realizado! Dados carregados do Firebase.');
   } catch (error) {
     console.error(error);
-    toast('Falha no login ou na sincronização. Confira e-mail, senha e conexão.');
+    toast('Erro Firebase: ' + (error.code || 'sem código') + ' — ' + (error.message || error));
   } finally {
     submit.disabled = false;
   }
